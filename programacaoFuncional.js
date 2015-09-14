@@ -1,29 +1,37 @@
-/**
- * Created by Veronica on 20/08/2015.
- */
+function construtor() {
 
-var gatilho = function gatilho(){
-    console.log('A');
-};
+  var observer = {};
+  var lista = [];
+  cont = 0;
 
-function gatilho2(funcao){
-    console.log('B');
+  observer.addObserver = function (obs) {
+    lista.push(obs);
+  };
 
-    function gatilho3(){
-        console.log('C');
-        funcao();
-
+  function gatilho() {
+	cont++;
+    for (var i = 0; i < lista.length; i++) {
+      var funcao = lista[i];
+      funcao();
     }
-    return gatilho3;
+  }
+
+  observer.gatilho = gatilho;
+  return observer;
+
 }
 
-g=gatilho;
-g();
-gatilho2(g);
+var obs = construtor();
+var obs1 = function () {
+  console.log("obs1");
+  console.log(cont);
+};
+obs.addObserver(obs1);
 
-gatilho2(function(){
-    console.log('Anonimo');
-});
+var obs2 = function () {
+  console.log("obs2");
+  console.log(cont);
+};
+obs.addObserver(obs2);
 
-var jExterna = gatilho2(g);
-jExterna();
+obs.gatilho();
